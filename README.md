@@ -1,2 +1,2 @@
-# simple-web-cat-clicker
-simple-web-cat-clicker
+# simple-picture-clicker
+simple-picture-clicker
