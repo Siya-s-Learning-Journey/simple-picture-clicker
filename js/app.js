@@ -52,10 +52,12 @@ var controller = {
 
     init: function () {
         // set current picture to the first one.
-        // model.currentPicture = model.pictures[0];
+        model.currentPicture = model.pictures[0];
 
 
         // initialize views
+        pictureListView.init();
+        pictureView.init();
 
     },
 
@@ -63,11 +65,19 @@ var controller = {
         return model.currentPicture;
     },
 
+    getPictures: function () {
+        return model.pictures;
+    },
+
 
     // increments the counter for the currently selected image.
     incrementCounter: function () {
         model.currentPicture.clickCount++;
         // picture.re
+    },
+
+    setCurrentPicture: function (picture) {
+        model.currentPicture = picture;
     }
 
 }
@@ -93,9 +103,8 @@ var pictureView = {
 
     },
 
-    render: function () {
+    render: function (currentPicture) {
         // update the DOM elements 
-        var currentPicture = controller.getCurrentPictureModel();
         this.pictureClickCounter.textContent = currentPicture.clickCount;
         this.pictureNameElem.textContent = currentPicture.name;
         this.pictureImageElem.src = currentPicture.imgSrc;
@@ -109,45 +118,57 @@ var pictureListView = {
 
     init: function () {
         //  Store dom pointer for access
-        this.pictureListElem = document.getElementById('single-picture');
+        this.pictureListElem = document.getElementById('picture-container');
 
         // Render this view
         this.render();
     },
 
     render: function () {
-        var singlePicture, element, i;
+        var singlePicture, i;
+
 
         // Get picture to render from controller
+        var pictures = controller.getPictures();
+
+        // Empty current list
+
+
+        // Loop through pictures
+        for (i = 0; i < pictures.length; i++) {
+
+            // Current picture
+            singlePicture = pictures[i];
+            
+            var divElemen = document.createElement('div');
+          
+            divElemen.innerHTML = '<h2 id="picture-name"></h2><h3>The cat has been clicked</h3><div id=\'click-counter\'>0</div><img id=\'current-image\' alt=\'\' src=\'' +singlePicture.imgSrc+'\'>';
+                        
+
+            // on click set current pic and reder the view
+            //  user closure-in-a-loop to acomplish.
+            divElemen.addEventListener('click', (function (pictureCopy) {
+
+                // inner function
+                return function () {
+                    controller.setCurrentPicture(pictureCopy);
+                    pictureView.render(pictureCopy);
+                };
+
+            })(singlePicture));
+
+    
+
+
+            // finally add it to the list
+            this.pictureListElem.appendChild(divElemen);
+        }
+
     }
 
 
 
-}
+};
 
-// ======== Old Code========
-for (let i = 1; i <= document.getElementsByClassName('grid-container1').length; i++) {
-    let catNameElement = document.getElementById('cat-image' + i);
-    let counterElement = document.getElementById('no-clicked' + i);
-    catNameElement.innerHTML = "picture : clicked"
-    catNameElement.addEventListener('click', function (numCopy) {
-
-        return function () {
-            counterElement.innerHTML = counter++;
-            console.log("Cat clicked")
-            alert(numCopy)
-        }
-    });
-}
-for (let i = 1; i <= document.getElementsByClassName('grid-container2').length; i++) {
-    let catNameElement = document.getElementById('cat-image' + i);
-
-    catNameElement.addEventListener('click', function (numCopy) {
-
-        return function () {
-            console.log("Cat clicked")
-            alert(numCopy)
-            alert("car clicked")
-        }
-    }(i));
-}
+// Run the code
+controller.init();
