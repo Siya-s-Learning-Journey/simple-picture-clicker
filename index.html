@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset='utf-8'>
@@ -13,13 +13,27 @@
 
 <body>
     <h1>Welcome to Picture Clicker</h1>
-    <div id=picture-container class="grid-container">
+
+    <h3>---------------------------------------------</h3>
+    <h2>Selected Picture</h2>
+    <div id=selected-picture-container>
+        <div id=single-picture>
+            <h2 id="selected-picture-name"></h2>
+            <div id='selected-click-counter'>0</div>
+            <img id='selected-current-image' alt='' src=''>
+        </div>
+    </div>
+    <h3>---------------------------------------------</h3>
+
+
+    <div id=picture-container>
         <div id=single-picture>
             <h2 id="picture-name"></h2>
             <div id='click-counter'>0</div>
             <img id='current-image' alt='' src=''>
         </div>
     </div>
+
 
 </body>
 
